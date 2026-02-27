@@ -28,8 +28,15 @@ class ServiceBusPublisher:
             self._client.close()
             self._client = None
 
-    def publish(self, topic, payload):
-        sb_message = ServiceBusMessage(body=json.dumps(payload))
+    def publish(self, topic, event_type, payload):
+        sb_message = ServiceBusMessage(
+            body=json.dumps(payload),
+            application_properties={
+                "event_type": event_type,
+                "event": event_type,
+            }
+
+        )
 
         with self._client.get_topic_sender(
             topic_name=topic

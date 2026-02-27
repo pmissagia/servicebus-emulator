@@ -47,7 +47,8 @@ async def mos_pub(
     try:
         publisher.publish(
             ServiceBusTopics.mos.value,
-            payload.model_dump()
+            payload.event_type,
+            payload.message
         )
     except Exception as exc:
         logger.exception("Webhook processing failed")
@@ -68,6 +69,7 @@ async def mindsmith_pub(
     try:
         publisher.publish(
             ServiceBusTopics.mindsmith.value,
+            payload.type,
             payload.model_dump()
         )
     except Exception as exc:
