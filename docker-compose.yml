@@ -13,6 +13,37 @@ services:
     networks:
       - shared
 
+  mssql:
+    container_name: "mssql"
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: Password1*
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - shared
+
+  servicebus-emulator:
+    container_name: "servicebus-emulator"
+    image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest
+    ports:
+      - "5672:5672"
+      - "5300:5300"
+    environment:
+      SQL_SERVER: mssql
+      MSSQL_SA_PASSWORD: Password1*
+      ACCEPT_EULA: Y
+    volumes:
+      - "./sb-emulator/config.json:/ServiceBus_Emulator/ConfigFiles/Config.json"
+    depends_on:
+      - mssql
+    networks:
+      - shared
+
+volumes:
+  mssql_data:
+
 networks:
   shared:
     external: true
