@@ -26,7 +26,7 @@ async def lifespan(_):
 
 
 app = FastAPI(
-    title="Simple Webhook Service Bus Producer",
+    title="Webhook Service Bus Producer",
     description=(
         "Receives webhook payloads and forwards them to an Azure Service Bus topic."
     ),
