@@ -70,7 +70,7 @@ async def mindsmith_pub(
         publisher.publish(
             ServiceBusTopics.mindsmith.value,
             payload.type,
-            payload.model_dump()
+            payload.model_dump(mode="json")
         )
     except Exception as exc:
         logger.exception("Webhook processing failed")
