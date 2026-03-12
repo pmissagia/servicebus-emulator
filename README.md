@@ -1,36 +1,45 @@
-# Simple Webhook Service Bus Producer
+# Service Bus Producer & Emulator
 
-Minimal FastAPI service that accepts POST payloads and publishes them to an Azure Service Bus topic.
+Local webhook service that publishes messages to the Azure Service Bus Emulator.
 
-## Features
+## Prerequisites
+- Docker
 
-- Single custom endpoint: `POST /webhook`
-- No request auth
-- No payload schema validation
-- Swagger UI available at `/docs`
-- OpenAPI available at `/openapi.json`
+## Setup
 
-## Required environment variables
+### Clone the repository:
 
-- `SERVICE_BUS_CONNECTION_STRING`
-- `SERVICE_BUS_TOPIC_NAME`
+`git clone https://github.com/pmissagia/servicebus-emulator.git`
 
-## Run locally
+### Start the environment:
 
-1. Create and activate a virtual environment
-2. Install dependencies from `requirements.txt`
-3. Copy `.env.example` to `.env` and set values
-4. Run:
+`docker compose up -d --build`
 
-`uvicorn main:app --host 0.0.0.0 --port 8005 --reload`
+NOTE: This will start the following containers:
+- servicebus-producer
+- servicebus-emulator
+- mssql
 
-## Run with Docker Compose
+### Swagger
 
-1. Copy `.env.example` to `.env` and set values
-2. Run:
+`http://localhost:8005/docs`
 
-`docker compose up --build`
+### API
 
-## Test webhook
+```
+POST /webhook/mos
+{
+  "event_type": "string",
+  "message": {}
+}
+```
 
-Send a POST request to `http://localhost:8005/webhook` with JSON body.
+```
+POST /webhook/mindsmith
+{
+  "type": "string",
+  "placement_id": "uuid",
+  "tenant_id": "uuid",
+  "data": {}
+}
+```
