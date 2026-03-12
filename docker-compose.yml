@@ -9,9 +9,8 @@ services:
       - .env
     ports:
       - "8005:8005"
-    restart: unless-stopped
     networks:
-      - shared
+      - servicebus-local
 
   mssql:
     container_name: "mssql"
@@ -22,7 +21,7 @@ services:
     volumes:
       - mssql_data:/var/opt/mssql
     networks:
-      - shared
+      - servicebus-local
 
   servicebus-emulator:
     container_name: "servicebus-emulator"
@@ -39,11 +38,11 @@ services:
     depends_on:
       - mssql
     networks:
-      - shared
+      - servicebus-local
 
 volumes:
   mssql_data:
 
 networks:
-  shared:
-    external: true
+  servicebus-local:
+    name: servicebus-local
